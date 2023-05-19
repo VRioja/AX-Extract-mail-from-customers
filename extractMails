@@ -1,0 +1,132 @@
+static void AT_VR_EXTRAERMAIL(Args _args)
+{
+
+    SalesPrintSetup         _SalesPrintSetup;
+    AccountNum              _CodCliente;
+    container               _printerSettings;
+    PrintJobSettings        _PrintJobSettings;
+    SalesFormLetter         _SalesFormLetter;
+    Str                     _Mailto;
+    AT_EnvioAlb             _AT_EnvioAlb;
+    AT_VR_Clientes          AT_VR_CLIENTES;
+    CustTable               CustTable;
+    AT_VR_AuxMail           _AT_VR_AuxMail;
+    ContactPerson           ContactPerson;
+    CustClassificationGroup _CustClassificationGroup;
+
+
+    _SalesFormLetter = NUll;
+
+
+
+
+   delete_from _AT_VR_Auxmail;
+
+
+        while select custtable //where custtable.InvoiceAccount == AT_VR_CLIENTES.CustAccount
+
+            {
+                _SalesPrintSetup =  SalesPrintSetup::find(ModuleCustSalesParameters::Cust,custtable.AccountNum,SalesPrintDocumentStatus::Quotation,PrintSetupOriginalCopy::Original);
+                _PrinterSettings= _salesPrintSetup.PrintJobSettings;
+                _PrintJobSettings = new PrintJobSettings(_printerSettings);
+                _PrintJobSettings.unpackPrintJobSettings(_printerSettings);
+
+                IF (_printJobSettings.mailTo())
+                  {
+                        _AT_VR_Auxmail.Email = _printJobSettings.mailTo();
+                        _AT_VR_AUXMAIL.CustAccount = CUSTTABLE.AccountNum;
+                        ttsbegin;
+                        _at_vr_auxmail.insert();
+                         ttscommit;
+
+                   }
+            }
+      while select custtable //where custtable.InvoiceAccount == AT_VR_CLIENTES.CustAccount
+
+            {
+
+
+                _SalesPrintSetup =  SalesPrintSetup::find(ModuleCustSalesParameters::Cust,custtable.AccountNum,SalesPrintDocumentStatus::Confirmation,PrintSetupOriginalCopy::Original);
+                _PrinterSettings= _salesPrintSetup.PrintJobSettings;
+                _PrintJobSettings = new PrintJobSettings(_printerSettings);
+                _PrintJobSettings.unpackPrintJobSettings(_printerSettings);
+
+                IF (_printJobSettings.mailTo())
+                  {
+                        _AT_VR_Auxmail.Email = _printJobSettings.mailTo();
+                        _AT_VR_AUXMAIL.CustAccount = CUSTTABLE.AccountNum;
+                        ttsbegin;
+                        _at_vr_auxmail.insert();
+                         ttscommit;
+
+                   }
+              }
+       while select custtable //where custtable.InvoiceAccount == AT_VR_CLIENTES.CustAccount
+
+            {
+
+                _SalesPrintSetup =  SalesPrintSetup::find(ModuleCustSalesParameters::Cust,custtable.AccountNum,SalesPrintDocumentStatus::PackingSlip,PrintSetupOriginalCopy::Original);
+                _PrinterSettings= _salesPrintSetup.PrintJobSettings;
+                _PrintJobSettings = new PrintJobSettings(_printerSettings);
+                _PrintJobSettings.unpackPrintJobSettings(_printerSettings);
+
+                IF (_printJobSettings.mailTo())
+                  {
+                        _AT_VR_Auxmail.Email = _printJobSettings.mailTo();
+                        _AT_VR_AUXMAIL.CustAccount = CUSTTABLE.AccountNum;
+                        ttsbegin;
+                        _at_vr_auxmail.insert();
+                         ttscommit;
+
+                   }
+            }
+
+       while select custtable //where custtable.InvoiceAccount == AT_VR_CLIENTES.CustAccount
+
+            {
+
+                _SalesPrintSetup =  SalesPrintSetup::find(ModuleCustSalesParameters::Cust,custtable.AccountNum,SalesPrintDocumentStatus::Invoice,PrintSetupOriginalCopy::Original);
+                _PrinterSettings= _salesPrintSetup.PrintJobSettings;
+                _PrintJobSettings = new PrintJobSettings(_printerSettings);
+                _PrintJobSettings.unpackPrintJobSettings(_printerSettings);
+
+                IF (_printJobSettings.mailTo())
+                  {
+                        _AT_VR_Auxmail.Email = _printJobSettings.mailTo();
+                        _AT_VR_AUXMAIL.CustAccount = CUSTTABLE.AccountNum;
+                        ttsbegin;
+                        _at_vr_auxmail.insert();
+                         ttscommit;
+
+                   }
+            }
+      while select ContactPerson where ContactPerson.title == 'V_COMCOMER'
+            {
+                _AT_VR_Auxmail.Email = ContactPerson.email;
+                _AT_VR_AUXMAIL.CustAccount = contactperson.CustAccount;
+                ttsbegin;
+                _at_vr_auxmail.insert();
+                ttscommit;
+             }
+
+    while select _custclassificationgroup where _custclassificationgroup.AT_Email != ''
+        {
+                 _AT_VR_Auxmail.Email = _custclassificationgroup.AT_Email;
+                _AT_VR_AUXMAIL.CustAccount =_custclassificationgroup.Code;
+                ttsbegin;
+                _at_vr_auxmail.insert();
+                ttscommit;
+             }
+
+
+
+
+
+
+
+
+
+
+            info ('fin');
+
+}
